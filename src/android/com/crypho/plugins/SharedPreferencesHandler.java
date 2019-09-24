@@ -7,7 +7,7 @@ import java.util.Iterator;
 import android.content.SharedPreferences;
 import android.content.Context;
 
-public class SharedPreferencesHandler {
+class SharedPreferencesHandler {
 	private SharedPreferences prefs;
 
 	public SharedPreferencesHandler (String prefsName, Context ctx){

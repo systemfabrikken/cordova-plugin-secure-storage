@@ -50,21 +50,29 @@ public class RSA {
      * @param alias
      * @return boolean
      */
-    static boolean encryptionKeysAvailable(String alias) {
-        return IS_API_23_AVAILABLE ? isEntryAvailable(alias) : isEntryAvailableLegacy(alias);
+    static boolean encryptionKeysAvailable(String alias, boolean allowInsecureHardware) {
+        return IS_API_23_AVAILABLE ? isEntryAvailable(alias, allowInsecureHardware) : isEntryAvailableLegacy(alias);
     }
 
 
     @TargetApi(Build.VERSION_CODES.M)
-    private static boolean isEntryAvailable(String alias) {
+    private static boolean isEntryAvailable(String alias, boolean allowInsecureHardware) {
         try {
             Key privateKey = loadKey(Cipher.DECRYPT_MODE, alias);
+
             if (privateKey == null) {
                 return false;
             }
+
+            // To allow running in an emulator
+            if(allowInsecureHardware) {
+                return true;
+            }
+
             KeyInfo keyInfo;
             KeyFactory factory = KeyFactory.getInstance(privateKey.getAlgorithm(), KEYSTORE_PROVIDER);
             keyInfo = factory.getKeySpec(privateKey, KeyInfo.class);
+
             return keyInfo.isInsideSecureHardware();
         } catch (Exception e) {
             Log.i(TAG, "Checking encryption keys failed.", e);

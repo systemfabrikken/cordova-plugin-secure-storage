@@ -33,6 +33,7 @@ public class SecureStorage extends CordovaPlugin {
     private String INIT_PACKAGENAME;
     private volatile CallbackContext secureDeviceContext, generateKeysContext, unlockCredentialsContext;
     private volatile boolean generateKeysContextRunning = false;
+    private Options options;
 
     @Override
     public void onResume(boolean multitasking) {
@@ -68,15 +69,15 @@ public class SecureStorage extends CordovaPlugin {
         }
         if ("init".equals(action)) {
             String service = args.getString(0);
-            JSONObject options = args.getJSONObject(1);
-            String packageName = options.optString("packageName", getContext().getPackageName());
+            JSONObject jsonObject = args.getJSONObject(1);
+            this.options = Options.fromJson(jsonObject, getContext().getPackageName());
 
             Context ctx = null;
 
             // Solves #151. By default, we use our own ApplicationContext
             // If packageName is provided, we try to get the Context of another Application with that packageName
             try {
-                ctx = getPackageContext(packageName);
+                ctx = getPackageContext(options.packageName);
             } catch (Exception e) {
                 // This will fail if the application with given packageName is not installed
                 // OR if we do not have required permissions and cause a security violation
@@ -94,16 +95,16 @@ public class SecureStorage extends CordovaPlugin {
                 Log.e(TAG, MSG_DEVICE_NOT_SECURE);
                 callbackContext.error(MSG_DEVICE_NOT_SECURE);
             }
-            if (!RSA.encryptionKeysAvailable(alias)) {
+            if (!RSA.encryptionKeysAvailable(alias, options.allowInsecureHardware)) {
                 // Encryption Keys aren't available, proceed to generate them
-                Integer userAuthenticationValidityDuration = options.optInt("userAuthenticationValidityDuration", DEFAULT_AUTHENTICATION_VALIDITY_TIME);
+                Integer userAuthenticationValidityDuration = options.userAuthenticationValidityDuration;
 
                 generateKeysContext = callbackContext;
                 generateEncryptionKeys(userAuthenticationValidityDuration);
             } else if (RSA.userAuthenticationRequired(alias)) {
                 // User has to confirm authentication via device credentials.
-                String title = options.optString("unlockCredentialsTitle", null);
-                String description = options.optString("unlockCredentialsDescription", null);
+                String title = options.unlockCredentialsTitle;
+                String description = options.unlockCredentialsDescription;
 
                 unlockCredentialsContext = callbackContext;
                 unlockCredentials(title, description);

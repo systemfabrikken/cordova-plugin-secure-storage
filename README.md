@@ -180,6 +180,7 @@ Minimum android supported version is 5.0 Lollipop. If you need to support earlie
 - `userAuthenticationValidityDuration` - Sets the duration of time (seconds) for which the Private Encryption Key is authorized to be used after the user is successfully authenticated. [KeyGenParameterSpec.Builder#setUserAuthenticationValidityDurationSeconds(int)](https://developer.android.com/reference/android/security/keystore/KeyGenParameterSpec.Builder.html#setUserAuthenticationValidityDurationSeconds(int))
 - `unlockCredentialsTitle` - Custom title for Confirm Credentials screen. See [KeyguardManager#createConfirmDeviceCredentialIntent(title, description)](https://developer.android.com/reference/android/app/KeyguardManager.html#createConfirmDeviceCredentialIntent(java.lang.CharSequence,%20java.lang.CharSequence))
 - `unlockCredentialsDescription` - Custom description for Confirm Credentials screen.
+- `allowInsecureHardware` - default false. Allows the plugin to work in the emulator.
 
 ```js
 var ss = new cordova.plugins.SecureStorage(

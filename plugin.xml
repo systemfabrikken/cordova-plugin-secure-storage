@@ -50,10 +50,11 @@
             </feature>
         </config-file>
 
-        <source-file src="src/android/SecureStorage.java" target-dir="src/com/crypho/plugins/" />
-        <source-file src="src/android/RSA.java" target-dir="src/com/crypho/plugins/" />
-        <source-file src="src/android/AES.java" target-dir="src/com/crypho/plugins/" />
-        <source-file src="src/android/SharedPreferencesHandler.java" target-dir="src/com/crypho/plugins/" />
+        <source-file src="src/android/com/crypho/plugins/SecureStorage.java" target-dir="src/com/crypho/plugins/" />
+        <source-file src="src/android/com/crypho/plugins/RSA.java" target-dir="src/com/crypho/plugins/" />
+        <source-file src="src/android/com/crypho/plugins/AES.java" target-dir="src/com/crypho/plugins/" />
+        <source-file src="src/android/com/crypho/plugins/SharedPreferencesHandler.java" target-dir="src/com/crypho/plugins/" />
+        <source-file src="src/android/com/crypho/plugins/Options.java" target-dir="src/com/crypho/plugins/" />
     </platform>
 
     <platform name="browser">

@@ -12,13 +12,13 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.KeyGenerator;
 
-public class AES {
+class AES {
     private static final String CIPHER_MODE = "CCM";
     private static final int KEY_SIZE = 256;
     private static final int VERSION = 1;
     private static final Cipher CIPHER = getCipher();
 
-    public static JSONObject encrypt(byte[] msg, byte[] adata) throws Exception {
+    static JSONObject encrypt(byte[] msg, byte[] adata) throws Exception {
         byte[] iv, ct, secretKeySpec_enc;
         synchronized (CIPHER) {
             SecretKeySpec secretKeySpec = generateKeySpec();
@@ -45,7 +45,7 @@ public class AES {
         return result;
     }
 
-    public static String decrypt(byte[] buf, byte[] key, byte[] iv, byte[] adata) throws Exception {
+    static String decrypt(byte[] buf, byte[] key, byte[] iv, byte[] adata) throws Exception {
         SecretKeySpec secretKeySpec = new SecretKeySpec(key, "AES");
         synchronized (CIPHER) {
             initCipher(Cipher.DECRYPT_MODE, secretKeySpec, iv, adata);
